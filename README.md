@@ -1,70 +1,176 @@
-# Getting Started with Create React App
+# Getting Started with Axios
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Axios is an HTTP client library that allows you to make requests to a given endpoint.
+- The API could be any external or your own backend Node.js server.
+- It helps us to make requests such as retrieve, create, update, and delete data from API.
 
-## Available Scripts
+## Fetch API Syntax
 
-In the project directory, you can run:
+const baseURL = "mock-api-url";
+fetch(baseURL)
+.then((res) => {
+res.json();
+})
+.then((data) => {
+console.log(data);
+});
 
-### `npm start`
+## Why Use Axios in React
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Five reasons why you should use Axios as your client to make HTTP requests:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. It has good defaults to work with JSON data. Unlike alternatives such as the Fetch API, you often don't need to set your headers.
+2. Axios has function names that match any HTTP methods. To perform a GET request, you use the .get() method.
+3. Axios does more with less code. Unlike the Fetch API, you only need one .then() callback to access your requested JSON data.
+4. Axios has better error handling. Axios throws 400 and 500 range errors for you. Unlike the Fetch API, where you have to check the status code and throw the error yourself.
+5. Axios can be used on the server as well as the client. If you are writing a Node.js application, be aware that Axios can also be used in an environment separate from the browser.
 
-### `npm test`
+## Set Up Axios with React
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> npm install axios
 
-### `npm run build`
+and then import in project:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+import axios from "axios";
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Make a GET Request
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- To fetch data or retrieve data, make a GET request.
+- Syntax
 
-### `npm run eject`
+```
+import axios from "axios";
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+const baseURL = "mock-api-url";
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+axios.get(baseURL)
+.then((response) => {
+    console.log(response.data);
+});
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Note: You can always find the requested data from the .data property in the response.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Make a POST Request
 
-## Learn More
+- To create new data/ add new data/ submit any data, make a POST request.
+- Syntax
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+import axios from "axios";
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+const baseURL = "mock-api-url";
 
-### Code Splitting
+axios.post(baseURL, {
+    property: value,
+    title: "Hello World!",
+    body: "This is a new post"
+})
+.then((response) => {
+    console.log(response.data);
+});
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- To make that POST request with Axios, you use the .post() method. As the second argument, you include an object property that specifies what you want the new post to be.
+- then, we use a .then() callback to get back the response data and replace the first post you got with the new post you requested.
 
-### Analyzing the Bundle Size
+## Make a PUT Request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- To update a given resource, make a PUT request.
+- Syntax
 
-### Making a Progressive Web App
+```
+import axios from "axios";
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+const baseURL = "mock-api-url";
 
-### Advanced Configuration
+axios.put(baseURL, {
+    property: value,
+})
+.then((res) => {
+    console.log(res.data);
+});
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- like the POST method, you include the properties that you want to be in the updated resource.
+- you are using the `.then()` callback, to update the JSX with the data that is returned.
 
-### Deployment
+## Make a DELETE Request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Finally, to delete a resource, use the DELETE method.
+- Syntax
 
-### `npm run build` fails to minify
+```
+import axios from "axios";
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+const baseURL = "mock-api-url";
+
+axios.delete(baseURL)
+.then(() => {
+    alert("Data deleted!");
+    console.log(null);
+});
+```
+
+- In most cases, you do not need the data that's returned from the .delete() method but .then() callback is still used to ensure that your request is successfully resolved.
+
+## Handle Error with Axios
+
+- Syntax
+
+```
+import React from "react";
+import axios from "axios";
+
+const baseURL = "mock-api-url";
+
+function App() {
+axios.get(baseURL)
+.then((res) => {
+    console.log(res.data);
+})
+.catch(err => {
+    console.error(err);
+});
+
+    return();
+};
+
+export default App;
+```
+
+## Create an Axios Instance
+
+- If you look at the previous examples, you'll see that there's a baseURL that you use as part of the endpoint for Axios to perform these requests.
+- However, it gets a bit tedious to keep writing that baseURL for every single request. Couldn't you just have Axios remember what baseURL you're using, since it always involves a similar endpoint?
+- In fact, you can. If you create an instance with the .create() method, Axios will remember that baseURL, plus other values you might want to specify for every request, including headers:
+
+```
+const client = axios.create({
+    baseURL = "mock-api-url";
+});
+
+client.get()
+.then((res) => {
+    console.log(res.data);
+});
+```
+
+- Thus, in the future, you can use all the same methods as you did before, but you don't have to include the baseURL as the first argument anymore. You just have to reference the specific route you want, for example, /, /1, and so on.
+
+## Use the Async-Await Syntax with Axios
+
+- Async-Await is used to handle promises in JavaScript.
+- Async makes a function return a Promise, Await makes a function wait for a Promise.
+- Async-Await allows you to write much cleaner code without `then` and `catch` callback functions.
+- The await keyword can only be used inside an async function.
+- The await keyword makes the function pause the execution and wait for a resolved promise before it continues.
+- Syntax
+
+```
+
+```
+
+## Create a Custom useAxios Hook
