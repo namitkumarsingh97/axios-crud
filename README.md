@@ -6,6 +6,7 @@
 
 ## Fetch API Syntax
 
+```
 const baseURL = "mock-api-url";
 fetch(baseURL)
 .then((res) => {
@@ -14,6 +15,7 @@ res.json();
 .then((data) => {
 console.log(data);
 });
+```
 
 ## Why Use Axios in React
 
@@ -27,7 +29,7 @@ console.log(data);
 
 ## Set Up Axios with React
 
-> npm install axios
+    > npm install axios
 
 and then import in project:
 
@@ -170,7 +172,61 @@ client.get()
 - Syntax
 
 ```
+import React, {useEffect} from "react";
+import axios from "axios";
+
+const baseURL = "mock-api-url";
+
+useEffect(() => {
+    async function getData() {
+        const response = await axios.get(baseURL);
+        console.log(response.data);
+    }
+
+    getData();
+}, [])
+```
+
+- However in useEffect, there's an async function called getData.
+- Making it async allows you to use the await keword to resolve the GET request and log that data in console on the next line without the .then() callback.
+- Note that the getData function is called immediately after being created.
+
+## Create a Custom useAxios Hook
+
+- Async-await is a great way to simplify your code, but you can take this a step further.
+- Instead of using useEffect to fetch data when the component mounts, you could create your own custom hook with Axios to perform the same operation as a reusable function.
+- Install the dependency package:
+  > npm install use-axios-client
+- Import this into your component:
+
+```
+import { useAxios } from "use-axios-client";
 
 ```
 
-## Create a Custom useAxios Hook
+- Now, you no longer need useEffect.
+- Syntax
+
+```
+import { useAxios } from "use-axios-client";
+
+const App = () => {
+    const {data, error, loading} = useAxios({
+        url: "mock-api-url"
+    });
+
+    if (loading || !data) return "Loading...";
+    if (error) return "Error!";
+
+    return(
+        <div>
+            <h1>{data.title}</h1>
+            <p>{data.body}</p>
+        </div>
+    );
+}
+```
+
+- Now you can call useAxios at the top of the app component, pass in the URL you want to make a request to, and the hook returns an object with all the values you need to handle the different states: loading, error and the resolved data.
+- In the process of performing this request, the value loading will be true. If there's an error, you'll want to display that error state. Otherwise, if you have the returned data, you can display it in the UI.
+- The benefit of custom hooks like this is that it really cuts down on code and simplifies it overall.
